@@ -4,11 +4,11 @@ Class {
 	#category : #DatasetGenerator
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #abstract }
 DataFrameUpdate class >> API_key: api_key ChannelId: channel_id Dataframe: df [
 
 	"Provide the YouTube API key and a YouTube channel ID.
-	Create a Dataframe by runiing this code in the Pharo Playground:
+	Create a Dataframe by running this code in the Pharo Playground:
 	Metacello new
   baseline: 'DataFrame';
   repository: 'github://PolyMathOrg/DataFrame/src';
@@ -16,10 +16,10 @@ DataFrameUpdate class >> API_key: api_key ChannelId: channel_id Dataframe: df [
 	df:=DataFrame new: 50@6.
 
 	df columnNames: #(video_id video_title upload_date view_count like_count comment_count).
+	
+	DataFrameUpdate API_key: api_key ChannelId: channel_id Dataframe: df.
 	"
 	|response content content_stat n n_stat qo ind h j1 h2 j v_id v_title v_date vc lc cc |
-	
-	
 	
 response := ZnClient new 
     url: 'https://www.googleapis.com/youtube/v3/search?key=',api_key,'&channelId=',channel_id,'&part=snippet,id&order=date&maxResults=100';
@@ -27,12 +27,10 @@ response := ZnClient new
     response.
 content := response contents.
 
-
-
 ind:=0.
-
 n:=content size.
 qo:=$".
+
 1 to: n-12 do: 
 [ :i|h:= content copyFrom: i to: i+6.
 	h='videoId'
@@ -82,14 +80,7 @@ qo:=$".
 		      
 		
 		].
-	
-	
-	
-	
-	
-	
 		
-	
 	h:= content copyFrom: i to: i+4.
 	h='title'
 	ifTrue: [ v_title:=''.
@@ -101,7 +92,6 @@ qo:=$".
 		h2:=content at: j.
 		]
 		].
-	
 	
 	h:= content copyFrom: i to: i+10.
 	h='publishTime'
